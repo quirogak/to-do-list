@@ -1,0 +1,26 @@
+{
+  "name": "to-do-list",
+  "version": "1.0.0",
+  "description": "Practicing SOLID principles in a to-do page.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/quirogak/to-do-list.git"
+  },
+  "author": "Ronald Quiroga",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/quirogak/to-do-list/issues"
+  },
+  "homepage": "https://github.com/quirogak/to-do-list#readme",
+  "devDependencies": {
+    "webpack": "^5.74.0",
+    "webpack-cli": "^4.10.0"
+  },
+  "dependencies": {
+    "date-fns": "^2.29.3"
+  }
+}

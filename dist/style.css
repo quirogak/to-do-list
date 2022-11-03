@@ -1,0 +1,63 @@
+body {
+    display: flex;
+    margin: 0;
+}
+
+.left-part {
+    height: 100vh;
+    width: 30%;
+    background-color: rgb(37, 35, 35);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: white;
+    flex-direction: column;
+}
+
+h1{
+    font-size: 3rem;
+    height: min-content;
+}
+
+.todos-container {
+    border: 1px solid rgb(173, 78, 78);
+    background-color: rgb(44, 40, 40);
+    border-radius: 10px;
+    height: 70vh;
+    width: 80%;
+}
+
+button {
+    border-radius: 100vh;
+    background-color: rgb(179, 76, 76);
+    align-self: flex-end;
+    height: 50px;
+    width: 50px;
+    font-size: 4rem;
+    padding: 0;
+    margin-bottom: 50px;
+    margin-right: 50px;
+    border: 1px solid rgb(94, 30, 30);
+    color: white;
+    line-height: 0.5;
+    
+    
+}
+
+button:hover{
+    background-color: rgb(160, 66, 66);
+}
+
+
+
+
+
+
+
+
+.right-part {
+    height: 100vh;
+    width: 70%;
+    background-color: rgb(44, 40, 40);
+    display: grid;
+}
