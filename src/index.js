@@ -1,5 +1,3 @@
-
-
 const genToDos = (() => {
 
     const createTodo = (title,description,dueDate,notes,priority,checkList) => {
@@ -106,7 +104,6 @@ const genToDos = (() => {
 
    const addButton = document.querySelector(".new-todo")
 
-   const currentToDo = ToDoElements[ToDoElements.length-1]
 
 
    const newToDo = () => {
@@ -117,6 +114,8 @@ const genToDos = (() => {
 
 
    const newToDoObject = () => {
+
+    const currentToDo = ToDoElements[ToDoElements.length-1]
 
     const title = currentToDo.titleInput.value
             
@@ -133,6 +132,19 @@ const genToDos = (() => {
 
     ToDoObjectList.push(createTodo(title, description, dueDate, notes, priority, checkList))
 
+
+   }
+
+   const addToDoDOM = () => {
+
+    const tabContainer = document.querySelector(".todos-container")
+    const newToDo = document.createElement("button")
+    tabContainer.appendChild(newToDo)
+    
+    newToDo.textContent = ToDoObjectList[ToDoObjectList.length-1].getTitle()
+
+
+
    }
 
 
@@ -143,7 +155,10 @@ const genToDos = (() => {
 
         newToDo()
 
-        currentToDo.submitToDo.addEventListener("click", newToDoObject)
+        ToDoElements[ToDoElements.length-1].submitToDo.addEventListener("click", newToDoObject)
+
+        ToDoElements[ToDoElements.length-1].submitToDo.addEventListener("click", addToDoDOM)
+        
 
     })
 
@@ -160,4 +175,3 @@ const genToDos = (() => {
 })();
 
 genToDos.genToDosLogic()
-
