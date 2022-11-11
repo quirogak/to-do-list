@@ -132,20 +132,26 @@ const genToDos = (() => {
 
     ToDoObjectList.push(createTodo(title, description, dueDate, notes, priority, checkList))
 
-
    }
+
 
    const addToDoDOM = () => {
 
     const tabContainer = document.querySelector(".todos-container")
     const newToDo = document.createElement("button")
+    newToDo.classList.add("todo-tab", "number"+parseInt(ToDoElements.length-1))
     tabContainer.appendChild(newToDo)
     
     newToDo.textContent = ToDoObjectList[ToDoObjectList.length-1].getTitle()
 
+    //when the user click submit, the todo container gets removed.
+    ToDoElements[ToDoElements.length-1].newTodoContainer.remove()
+
+    
 
 
    }
+
 
 
 
