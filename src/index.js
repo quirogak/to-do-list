@@ -144,13 +144,28 @@ const genToDos = (() => {
     
     newToDo.textContent = ToDoObjectList[ToDoObjectList.length-1].getTitle()
 
-    //when the user click submit, the todo container gets removed.
+    //when the user clicks submit, the todo container gets removed.
     ToDoElements[ToDoElements.length-1].newTodoContainer.remove()
 
     
 
+   }
+
+   const returnTabDetails = () => {
+
+    const currentToDoIndex = ToDoElements.length-1
+    const currentToDoIndexString = currentToDoIndex.toString()
+    const currentToDo = document.querySelector(".number"+currentToDoIndexString)
+    const currentToDoNumber = currentToDo.classList[1].slice(-1)
+
+
+    console.log(ToDoObjectList[currentToDoNumber])
+
+
+
 
    }
+
 
 
 
@@ -163,7 +178,16 @@ const genToDos = (() => {
 
         ToDoElements[ToDoElements.length-1].submitToDo.addEventListener("click", newToDoObject)
 
-        ToDoElements[ToDoElements.length-1].submitToDo.addEventListener("click", addToDoDOM)
+        ToDoElements[ToDoElements.length-1].submitToDo.addEventListener("click", () => { 
+            
+            addToDoDOM()
+
+            const currentToDoIndex = ToDoElements.length-1
+            const currentToDoIndexString = currentToDoIndex.toString()
+
+            document.querySelector(".number"+currentToDoIndexString).addEventListener("click", (returnTabDetails))
+
+        })
         
 
     })
