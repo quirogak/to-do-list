@@ -2,20 +2,20 @@ const genToDos = (() => {
 
     const createTodo = (title,description,dueDate,notes,priority,checkList) => {
 
-        const getTitle = () => title
+         title = title
 
-        const getDescription = () => description
+         description = description
 
-        const getDueDate = () => dueDate
+         dueDate = dueDate
 
-        const getNotes = () => notes
+         notes = notes
 
-        const getPriority = () => priority
+         priority = priority
 
-        const getCheckList = () => checkList
+         checkList = checkList
 
 
-        return {getTitle,getDescription,getDueDate,getNotes,getCheckList,getPriority}
+        return {title,description,dueDate,notes,priority,checkList}
 
     }
 
@@ -163,7 +163,7 @@ const genToDos = (() => {
     tabContainer.appendChild(newToDo)
     
     //Assign a name to the left-part tab 
-    newToDo.textContent = ToDoObjectList[ToDoObjectList.length-1].getTitle()
+    newToDo.textContent = ToDoObjectList[ToDoObjectList.length-1].title
 
     //when the user clicks submit, the todo container gets removed.
     removeContainer()
@@ -176,18 +176,45 @@ const genToDos = (() => {
     const currentToDo = ToDoObjectList[currentToDoIndex]
     genToDosDOM(currentToDoIndex)
 
-    document.querySelector(".title-input"+currentToDoIndex).value = currentToDo.getTitle()
+    document.querySelector(".title-input"+currentToDoIndex).value = currentToDo.title
 
+    document.querySelector(".desc-input"+currentToDoIndex).value = currentToDo.description
 
+    document.querySelector(".todo-date"+currentToDoIndex).defaultValue = currentToDo.dueDate
+
+    document.querySelector(".notes-input"+currentToDoIndex).value = currentToDo.notes
 
 
 }
 
-const updateToDoDetails = () => {
+const updateToDoObject = (e) => {
+
+    const index = e.target.classList[0]
+    const currentToDoIndex = index.slice(-1)
+    const currentToDo = document.querySelector(".title-input"+currentToDoIndex)
+    const currentObject = ToDoObjectList[currentToDoIndex]
+
+
+    currentObject.title = currentToDo.value
+            
+   
+
+    updateTab(e,currentToDo.value)
 
     removeContainer()
+
 }
 
+const updateTab = (e,newValue) => {
+
+    const index = e.target.classList[0]
+    const currentToDoIndex = index.slice(-1)
+    const currentToDoTab = document.querySelector(".number"+currentToDoIndex)
+
+    currentToDoTab.textContent = newValue
+
+
+}
 
 
 
@@ -199,9 +226,7 @@ const updateToDoDetails = () => {
 
  const callReturnTab = (e) => {
 
-
     addToDoDOM()
-
     const index = e.target.classList[0]
     const currentToDoIndex = index.slice(-1)
     const currentToDoTab = document.querySelector(".number"+currentToDoIndex)
@@ -213,7 +238,10 @@ const updateToDoDetails = () => {
         returnToDosDOM(currentToDoIndex)
         const currentSubmitButton = document.querySelector(".submit-todo-button"+currentToDoIndex)
 
-        currentSubmitButton.addEventListener("click", updateToDoDetails)
+        currentSubmitButton.addEventListener("click", (e)=> {
+
+            updateToDoObject(e)
+        })
 
 
 
@@ -249,7 +277,6 @@ const updateToDoDetails = () => {
 
 
 
-    //Event Listeners
 
 
    
