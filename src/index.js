@@ -106,6 +106,7 @@ const genToDos = (() => {
    const addButton = document.querySelector(".new-todo")
 
 
+
    //Functions
 
    const newToDo = () => {
@@ -138,9 +139,19 @@ const genToDos = (() => {
 
    const removeContainer = () => {
 
-     ToDoElements[ToDoElements.length-1].newTodoContainer.remove() 
+    const toDoContainer = document.querySelector(".todo-container")
+     toDoContainer.remove()
 
     }
+
+    const checkContainer = () => {
+    
+        if(document.querySelector(".todo-container") != null){
+            removeContainer()
+        }
+        
+    }
+    
 
 
    const addToDoDOM = () => {
@@ -172,34 +183,38 @@ const genToDos = (() => {
 
 }
 
+const updateToDoDetails = () => {
+
+    removeContainer()
+}
 
 
 
- const returnTabDetails = (index) => {
 
-    const currentToDoIndex = index.slice(-1)
-    returnToDosDOM(currentToDoIndex)
 
-   }
 
-   
+
 
     //Event Listener Functions
 
- const callReturnTab = () => {
+ const callReturnTab = (e) => {
+
 
     addToDoDOM()
-    removeContainer()
 
-    const currentToDoIndex = ToDoElements.length-1
-    const currentToDoIndexString = currentToDoIndex.toString()
-    const currentToDoTab = document.querySelector(".number"+currentToDoIndexString)
+    const index = e.target.classList[0]
+    const currentToDoIndex = index.slice(-1)
+    const currentToDoTab = document.querySelector(".number"+currentToDoIndex)
 
    
-    currentToDoTab.addEventListener("click", (e) => {
+    currentToDoTab.addEventListener("click", () => {
 
-       const index = e.target.classList[1]
-       returnTabDetails(index)
+        checkContainer()
+        returnToDosDOM(currentToDoIndex)
+        const currentSubmitButton = document.querySelector(".submit-todo-button"+currentToDoIndex)
+
+        currentSubmitButton.addEventListener("click", updateToDoDetails)
+
 
 
        })
@@ -214,11 +229,15 @@ const genToDos = (() => {
 
     addButton.addEventListener("click", () => {
 
+        
+        checkContainer()
         newToDo()
+
 
         ToDoElements[ToDoElements.length-1].submitToDo.addEventListener("click", newToDoObject)
 
         ToDoElements[ToDoElements.length-1].submitToDo.addEventListener("click", callReturnTab)
+        
         
 
     })
