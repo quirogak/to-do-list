@@ -91,12 +91,13 @@ const genToDos = (() => {
 
         return {newTodoContainer,titleInput,descriptionInput,todoDate,notesInput,priorityCheckList,tasksCheckList,submitToDo}
 
-
    } 
 
 
 
    const genToDosLogic = () => {
+
+  //Global constants
 
    const ToDoElements = []
 
@@ -105,6 +106,7 @@ const genToDos = (() => {
    const addButton = document.querySelector(".new-todo")
 
 
+   //Functions
 
    const newToDo = () => {
 
@@ -134,43 +136,81 @@ const genToDos = (() => {
 
    }
 
+   const removeContainer = () => {
+
+     ToDoElements[ToDoElements.length-1].newTodoContainer.remove() 
+
+    }
+
 
    const addToDoDOM = () => {
 
     const tabContainer = document.querySelector(".todos-container")
     const newToDo = document.createElement("button")
+
     newToDo.classList.add("todo-tab", "number"+parseInt(ToDoElements.length-1))
     tabContainer.appendChild(newToDo)
     
+    //Assign a name to the left-part tab 
     newToDo.textContent = ToDoObjectList[ToDoObjectList.length-1].getTitle()
 
     //when the user clicks submit, the todo container gets removed.
-    ToDoElements[ToDoElements.length-1].newTodoContainer.remove()
+    removeContainer()
 
-    
 
    }
 
-   const returnTabDetails = () => {
+   const returnToDosDOM = (currentToDoIndex) => {
+
+    const currentToDo = ToDoObjectList[currentToDoIndex]
+    genToDosDOM(currentToDoIndex)
+
+    document.querySelector(".title-input"+currentToDoIndex).value = currentToDo.getTitle()
+
+
+
+
+}
+
+
+
+
+ const returnTabDetails = (index) => {
+
+    const currentToDoIndex = index.slice(-1)
+    returnToDosDOM(currentToDoIndex)
+
+   }
+
+   
+
+    //Event Listener Functions
+
+ const callReturnTab = () => {
+
+    addToDoDOM()
+    removeContainer()
 
     const currentToDoIndex = ToDoElements.length-1
     const currentToDoIndexString = currentToDoIndex.toString()
-    const currentToDo = document.querySelector(".number"+currentToDoIndexString)
-    const currentToDoNumber = currentToDo.classList[1].slice(-1)
+    const currentToDoTab = document.querySelector(".number"+currentToDoIndexString)
+
+   
+    currentToDoTab.addEventListener("click", (e) => {
+
+       const index = e.target.classList[1]
+       returnTabDetails(index)
 
 
-    console.log(ToDoObjectList[currentToDoNumber])
+       })
 
-
-
-
-   }
+ }
 
 
 
 
 
-
+    //Event Listeners
 
     addButton.addEventListener("click", () => {
 
@@ -178,23 +218,24 @@ const genToDos = (() => {
 
         ToDoElements[ToDoElements.length-1].submitToDo.addEventListener("click", newToDoObject)
 
-        ToDoElements[ToDoElements.length-1].submitToDo.addEventListener("click", () => { 
-            
-            addToDoDOM()
-
-            const currentToDoIndex = ToDoElements.length-1
-            const currentToDoIndexString = currentToDoIndex.toString()
-
-            document.querySelector(".number"+currentToDoIndexString).addEventListener("click", (returnTabDetails))
-
-        })
+        ToDoElements[ToDoElements.length-1].submitToDo.addEventListener("click", callReturnTab)
         
 
     })
 
-    
+   }
 
- 
+
+
+
+
+
+    //Event Listeners
+
+
+   
+
+   const searchLogic = () => {
 
    }
  
