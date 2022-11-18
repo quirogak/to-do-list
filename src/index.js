@@ -1,55 +1,58 @@
-const genToDos = (() => {
 
-    const createTodo = (title,description,dueDate,notes,priority,checkList) => {
+const genObjects = (() => {
+
+    const createProject = (title,description,addToDo) => {
 
          title = title
 
          description = description
 
-         dueDate = dueDate
-
-         notes = notes
-
-         priority = priority
-
-         checkList = checkList
+         addToDo = addToDo
 
 
-        return {title,description,dueDate,notes,priority,checkList}
+        return {title,description,addToDo}
+
 
     }
 
+    const createToDo = (title,description,dueDate,priority) => {
 
-   
+        title = title
+        description = description
+        dueDate = dueDate
+        priority = priority
 
-   const genToDosDOM = (i) => {
+    }
+
+    return {createProject,createToDo}
+
+})();
+
+
+const genDomElements = (() => {
+
+    const genProjectsDOM = (i) => {
 
         const rightPart = document.querySelector(".right-part")
 
-        const newTodoContainer = document.createElement("div")
-        rightPart.appendChild(newTodoContainer)
-        newTodoContainer.classList.add("todo-container")
+        const newProjectContainer = document.createElement("div")
+        rightPart.appendChild(newProjectContainer)
+        newProjectContainer.classList.add("project-container")
 
 
-        const titleContainer = document.createElement("div")
-        newTodoContainer.appendChild(titleContainer)
-
-        const title = document.createElement("h2")
-        titleContainer.appendChild(title)
-        title.textContent = "Title"
- 
         const titleInput = document.createElement("input")
-        titleContainer.appendChild(titleInput)
+        newProjectContainer.appendChild(titleInput)
         titleInput.type = "text"
         titleInput.classList.add("title-input"+i)
 
  
         const descriptionInput = document.createElement("input")
-        newTodoContainer.appendChild(descriptionInput)
+        newProjectContainer.appendChild(descriptionInput)
         descriptionInput.type = "text"
         descriptionInput.classList.add("desc-input"+i)
 
  
+        /*
         const todoDate = document.createElement("input")
         newTodoContainer.appendChild(todoDate)
         todoDate.type = "date"
@@ -60,93 +63,97 @@ const genToDos = (() => {
         newTodoContainer.appendChild(notesInput)
         notesInput.type = "text"
         notesInput.classList.add("notes-input"+i)
-
+*/
 
         const tasksContainer = document.createElement("div")
-        newTodoContainer.appendChild(tasksContainer)
+        newProjectContainer.appendChild(tasksContainer)
 
-        const tasksCheckList = document.createElement("input")
-        tasksContainer.appendChild(tasksCheckList)
-        tasksCheckList.type = "text"
-        tasksCheckList.classList.add("tasks-checklist"+i)
+        const tasksAddToDo = document.createElement("input")
+        tasksContainer.appendChild(tasksAddToDo)
+        tasksAddToDo.type = "text"
+        tasksAddToDo.classList.add("tasks-AddToDo"+i)
 
         const submitTask = document.createElement("button")
         tasksContainer.appendChild(submitTask)
         submitTask.type ="button"
         submitTask.classList.add("submit-task-button"+i)
-        submitTask.textContent = "Add Task"
+        submitTask.textContent = "Add To-Do"
 
- 
-        const priorityCheckList = document.createElement("button")
-        newTodoContainer.appendChild(priorityCheckList)
-        priorityCheckList.classList.add("priority-checklist"+i)
-        priorityCheckList.textContent = "Set Priorities"
+ /*
+        const priorityAddToDo = document.createElement("button")
+        newTodoContainer.appendChild(priorityAddToDo)
+        priorityAddToDo.classList.add("priority-AddToDo"+i)
+        priorityAddToDo.textContent = "Set Priorities"
 
+     */
        
  
-        const submitToDo = document.createElement("button")
-        newTodoContainer.appendChild(submitToDo)
-        submitToDo.classList.add("submit-todo-button"+i)
-        submitToDo.textContent = "Submit"
+        const submitProject = document.createElement("button")
+        newProjectContainer.appendChild(submitProject)
+        submitProject.classList.add("submit-project-button"+i)
+        submitProject.textContent = "Submit"
 
-        return {newTodoContainer,titleInput,descriptionInput,todoDate,notesInput,priorityCheckList,tasksCheckList,submitToDo}
+        return {newProjectContainer,titleInput,descriptionInput,tasksAddToDo,submitProject}
 
    } 
 
+   return {genProjectsDOM}
+
+   
+})();
+
+   
+
+   
 
 
-   const genToDosLogic = () => {
+
+const projectsLogic = (() => {
 
   //Global constants
 
-   const ToDoElements = []
+   const projectElements = []
 
-   const ToDoObjectList = []
+   const projectObjectList = []
 
-   const addButton = document.querySelector(".new-todo")
+   const addButton = document.querySelector(".new-project")
 
 
 
    //Functions
 
-   const newToDo = () => {
+   const newProject = () => {
 
-    ToDoElements.push(genToDosDOM(ToDoElements.length))
+    projectElements.push(genDomElements.genProjectsDOM(projectElements.length))
 
    }
 
 
-   const newToDoObject = () => {
+   const newProjectObject = () => {
 
-    const currentToDo = ToDoElements[ToDoElements.length-1]
+    const currentProject = projectElements[projectElements.length-1]
 
-    const title = currentToDo.titleInput.value
+    const title = currentProject.titleInput.value
             
-    const description = currentToDo.descriptionInput.value
+    const description = currentProject.descriptionInput.value
     
-    const dueDate = currentToDo.todoDate.value
-    
-    const notes = currentToDo.notesInput.value
-    
-    const priority = currentToDo.priorityCheckList.value
-    
-    const checkList = currentToDo.tasksCheckList.value
+    const AddToDo = currentProject.tasksAddToDo.value
 
 
-    ToDoObjectList.push(createTodo(title, description, dueDate, notes, priority, checkList))
+    projectObjectList.push(genObjects.createProject(title, description, AddToDo))
 
    }
 
    const removeContainer = () => {
 
-    const toDoContainer = document.querySelector(".todo-container")
-     toDoContainer.remove()
+    const projectContainer = document.querySelector(".project-container")
+     projectContainer.remove()
 
     }
 
     const checkContainer = () => {
     
-        if(document.querySelector(".todo-container") != null){
+        if(document.querySelector(".project-container") != null){
             removeContainer()
         }
         
@@ -154,102 +161,90 @@ const genToDos = (() => {
     
 
 
-   const addToDoDOM = () => {
+   const addProjectDOM = () => {
 
-    const tabContainer = document.querySelector(".todos-container")
-    const newToDo = document.createElement("button")
+    const tabContainer = document.querySelector(".tab-container")
+    const newProject = document.createElement("button")
 
-    newToDo.classList.add("todo-tab", "number"+parseInt(ToDoElements.length-1))
-    tabContainer.appendChild(newToDo)
+    newProject.classList.add("project-tab", "number"+parseInt(projectElements.length-1))
+    tabContainer.appendChild(newProject)
     
     //Assign a name to the left-part tab 
-    newToDo.textContent = ToDoObjectList[ToDoObjectList.length-1].title
+    newProject.textContent = projectObjectList[projectObjectList.length-1].title
 
-    //when the user clicks submit, the todo container gets removed.
+    //when the user clicks submit, the Project container gets removed.
     removeContainer()
 
 
    }
 
-   const returnToDosDOM = (currentToDoIndex) => {
+   const returnProjectsDOM = (currentProjectIndex) => {
 
-    const currentToDo = ToDoObjectList[currentToDoIndex]
-    genToDosDOM(currentToDoIndex)
+    const currentProject = projectObjectList[currentProjectIndex]
+    genDomElements.genProjectsDOM(currentProjectIndex)
 
-    document.querySelector(".title-input"+currentToDoIndex).value = currentToDo.title
+    document.querySelector(".title-input"+currentProjectIndex).value = currentProject.title
 
-    document.querySelector(".desc-input"+currentToDoIndex).value = currentToDo.description
+    document.querySelector(".desc-input"+currentProjectIndex).value = currentProject.description
 
-    document.querySelector(".todo-date"+currentToDoIndex).defaultValue = currentToDo.dueDate
 
-    document.querySelector(".notes-input"+currentToDoIndex).value = currentToDo.notes
 
 
 }
 
-const updateToDoObject = (e) => {
+const updateProjectObject = (e) => {
 
     const index = e.target.classList[0]
-    const currentToDoIndex = index.slice(-1)
-    const currentToDo = document.querySelector(".title-input"+currentToDoIndex)
-    const currentObject = ToDoObjectList[currentToDoIndex]
+    const currentProjectIndex = index.slice(-1)
+    const currentObject = projectObjectList[currentProjectIndex]
 
 
-    currentObject.title = currentToDo.value
+    currentObject.title = document.querySelector(".title-input"+currentProjectIndex).value
+
+    currentObject.description = document.querySelector(".desc-input"+currentProjectIndex).value
+
             
    
 
-    updateTab(e,currentToDo.value)
+    updateTab(currentProjectIndex,currentObject.title)
 
     removeContainer()
 
 }
 
-const updateTab = (e,newValue) => {
+const updateTab = (currentProjectIndex,newValue) => {
 
-    const index = e.target.classList[0]
-    const currentToDoIndex = index.slice(-1)
-    const currentToDoTab = document.querySelector(".number"+currentToDoIndex)
-
-    currentToDoTab.textContent = newValue
+    const currentProjectTab = document.querySelector(".number"+currentProjectIndex)
+    currentProjectTab.textContent = newValue
 
 
 }
-
-
-
-
-
 
 
     //Event Listener Functions
 
  const callReturnTab = (e) => {
 
-    addToDoDOM()
+    addProjectDOM()
     const index = e.target.classList[0]
-    const currentToDoIndex = index.slice(-1)
-    const currentToDoTab = document.querySelector(".number"+currentToDoIndex)
+    const currentProjectIndex = index.slice(-1)
+    const currentProjectTab = document.querySelector(".number"+currentProjectIndex)
 
    
-    currentToDoTab.addEventListener("click", () => {
+    currentProjectTab.addEventListener("click", () => {
 
         checkContainer()
-        returnToDosDOM(currentToDoIndex)
-        const currentSubmitButton = document.querySelector(".submit-todo-button"+currentToDoIndex)
+        returnProjectsDOM(currentProjectIndex)
+        const currentSubmitButton = document.querySelector(".submit-project-button"+currentProjectIndex)
 
         currentSubmitButton.addEventListener("click", (e)=> {
 
-            updateToDoObject(e)
+            updateProjectObject(e)
         })
 
-
-
-       })
+    })
 
  }
-
-
 
 
 
@@ -259,25 +254,16 @@ const updateTab = (e,newValue) => {
 
         
         checkContainer()
-        newToDo()
+        newProject()
 
 
-        ToDoElements[ToDoElements.length-1].submitToDo.addEventListener("click", newToDoObject)
+        projectElements[projectElements.length-1].submitProject.addEventListener("click", newProjectObject)
 
-        ToDoElements[ToDoElements.length-1].submitToDo.addEventListener("click", callReturnTab)
+        projectElements[projectElements.length-1].submitProject.addEventListener("click", callReturnTab)
         
         
 
     })
-
-   }
-
-
-
-
-
-
-
 
    
 
@@ -287,8 +273,8 @@ const updateTab = (e,newValue) => {
  
 
    
-   return {genToDosLogic}
+   return {}
 
 })();
 
-genToDos.genToDosLogic()
+
