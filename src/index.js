@@ -341,8 +341,6 @@ const toDosLogic = (() => {
 
         
         toDoElements.push(genDomElements.genToDosDOM(currentProjectIndex,toDoIndex))
-        newToDoObject()
-
         
 
      })
@@ -352,14 +350,11 @@ const toDosLogic = (() => {
     }
 
     const pushObjectsList = () => {
-        toDoObjects = toDoObjects.filter(e => e % 2 === 0)
         toDoObjectsList.push(toDoObjects)
     }
     
 
     const newToDoObject = () => {
-
-        submitToDoButton.addEventListener("click",() => {
 
         for(i = 0; i < toDoElements.length ; i++){
 
@@ -367,17 +362,12 @@ const toDosLogic = (() => {
         toDoObjects.push(genObjects.createToDo(toDoTitleValue))
 
         }
-
-
-
-      
-      
-
         
-        })
-
+        
+    }
         //Event Listeners
 
+        submitToDoButton.addEventListener("click",newToDoObject)
         submitToDoButton.addEventListener("click",pushElementsList)
         submitToDoButton.addEventListener("click",pushObjectsList)
 
@@ -387,7 +377,7 @@ const toDosLogic = (() => {
     
 
         
-    }
+    
 
 
         
@@ -402,7 +392,7 @@ const toDosLogic = (() => {
 
             genDomElements.genToDosDOM(projectIndex,i)
             //for loop
-            const currentToDoTitle = document.querySelector(".todo-title"+i)
+            const currentToDo = document.querySelector(".todo-title"+i)
 
 
 
