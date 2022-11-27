@@ -86,7 +86,7 @@ const genDomElements = (() => {
         newProjectContainer.appendChild(submitToDo)
         submitToDo.type ="button"
         submitToDo.classList.add("submit-todo")
-        submitToDo.classList.add("submit-task-button"+i)
+        submitToDo.classList.add("submit-todo-button"+i)
         submitToDo.textContent = "+"
 
 
@@ -120,6 +120,7 @@ const genDomElements = (() => {
         checkToDo.type = "checkbox"
         checkToDo.classList.add("checkbox"+toDoIndex)
         checkToDo.classList.add("checkbox"+projectIndex)
+
 
         return {toDoTitle}
    }
@@ -257,13 +258,12 @@ const updateTab = (currentProjectIndex,newValue) => {
     const currentProjectIndex = index.slice(-1)
     const currentProjectTab = document.querySelector(".number"+currentProjectIndex)
 
-   
+   //return project & todos
     currentProjectTab.addEventListener("click", () => {
  
         checkContainer()
         returnProjectsDOM(currentProjectIndex)
-        toDosLogic.newToDo()
-        toDosLogic.returnToDoDOM(currentProjectIndex)
+        toDosLogic.returnToDoDOM(currentProjectIndex).genToDoElements()
 
 
         const currentSubmitButton = document.querySelector(".submit-project-button"+currentProjectIndex)
@@ -320,18 +320,16 @@ const updateTab = (currentProjectIndex,newValue) => {
 const toDosLogic = (() => {
 
     
-    const toDoElementsList = []
-    const toDoObjectsList = []
+ const toDoElementsList = []
+ const toDoObjectsList = []
     
-    const newToDo = () => {
+   const newToDo = () => {
 
     const toDoElements = []
     let toDoObjects = []
-
     const submitToDoButton = document.querySelector(".submit-button")
     const addToDoButton = document.querySelector(".submit-todo")
 
-    
 
     addToDoButton.addEventListener("click", (e) => {
 
@@ -339,7 +337,6 @@ const toDosLogic = (() => {
         const currentProjectIndex = index.slice(-1)
         const toDoIndex = toDoElements.length
 
-        
         toDoElements.push(genDomElements.genToDosDOM(currentProjectIndex,toDoIndex))
         
 
@@ -371,8 +368,6 @@ const toDosLogic = (() => {
         submitToDoButton.addEventListener("click",pushElementsList)
         submitToDoButton.addEventListener("click",pushObjectsList)
 
-        console.log(toDoElementsList)
-        console.log(toDoObjectsList)
 
     
 
@@ -382,22 +377,44 @@ const toDosLogic = (() => {
 
         
         
-    }
+  }
+
      
     const returnToDoDOM = (projectIndex) => {
 
+        
+        const numberOfToDos = toDoElementsList[projectIndex].length
+        const submitToDoButton = document.querySelector(".submit-button")
+        const addToDoButton = document.querySelector(".submit-todo")
+
+        addToDoButton.className = "old-submit-todo"
+        const oldProjectToDo = document.querySelector(".old-submit-todo")
+        
+
+       
+        
 
 
-        for(i = 0; i >= 3; i++){
+        const genToDoElements = () => {
 
-            genDomElements.genToDosDOM(projectIndex,i)
-            //for loop
-            const currentToDo = document.querySelector(".todo-title"+i)
+            for(i = 0; i < numberOfToDos; i++){
 
+          
+                console.log(projectIndex)
+                genDomElements.genToDosDOM(projectIndex,i)
+                console.log(toDoElementsList[projectIndex])
+            
+            } 
+    
+        }
 
+      
+        //Event Listeners
+        oldProjectToDo.addEventListener("click",genToDoElements)
 
-        } 
+        return {genToDoElements}
 
+        
        
             
     
