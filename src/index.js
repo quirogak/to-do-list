@@ -367,15 +367,6 @@ const toDosLogic = (() => {
         submitToDoButton.addEventListener("click",newToDoObject)
         submitToDoButton.addEventListener("click",pushElementsList)
         submitToDoButton.addEventListener("click",pushObjectsList)
-
-
-    
-
-        
-    
-
-
-        
         
   }
 
@@ -390,8 +381,6 @@ const toDosLogic = (() => {
         addToDoButton.className = "old-submit-todo"
         const oldProjectToDo = document.querySelector(".old-submit-todo")
         
-
-       
         
 
 
@@ -400,17 +389,24 @@ const toDosLogic = (() => {
             for(i = 0; i < numberOfToDos; i++){
 
           
-                console.log(projectIndex)
                 genDomElements.genToDosDOM(projectIndex,i)
+                console.log(projectIndex)
                 console.log(toDoElementsList[projectIndex])
             
             } 
     
         }
 
+        const newToDoOldProject = () => {
+
+                toDoElementsList[projectIndex].push(genDomElements.genToDosDOM(projectIndex,i))
+            
+
+        }
+
       
         //Event Listeners
-        oldProjectToDo.addEventListener("click",genToDoElements)
+        oldProjectToDo.addEventListener("click",newToDoOldProject)
 
         return {genToDoElements}
 
