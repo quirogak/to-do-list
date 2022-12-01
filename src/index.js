@@ -358,6 +358,7 @@ const toDosLogic = (() => {
         toDoTitleValue =  toDoElements[i].toDoTitle.value
         toDoObjects.push(genObjects.createToDo(toDoTitleValue))
 
+
         }
         
         
@@ -367,6 +368,7 @@ const toDosLogic = (() => {
         submitToDoButton.addEventListener("click",newToDoObject)
         submitToDoButton.addEventListener("click",pushElementsList)
         submitToDoButton.addEventListener("click",pushObjectsList)
+       
         
   }
 
@@ -379,7 +381,9 @@ const toDosLogic = (() => {
         const addToDoButton = document.querySelector(".submit-todo")
 
         addToDoButton.className = "old-submit-todo"
-        const oldProjectToDo = document.querySelector(".old-submit-todo")
+        const oldSubmitToDo = document.querySelector(".old-submit-todo")
+        
+     
         
         
 
@@ -388,13 +392,33 @@ const toDosLogic = (() => {
 
             for(i = 0; i < numberOfToDos; i++){
 
-          
                 genDomElements.genToDosDOM(projectIndex,i)
-                console.log(projectIndex)
-                console.log(toDoElementsList[projectIndex])
+
+                document.querySelector(".todo-title"+i).value = toDoObjectsList[projectIndex][i].title
+
             
             } 
+
+            
+            console.log(toDoObjectsList)
+            
     
+        }
+
+        const newToDoObjectOldProject = () => {
+
+            const updatedNumberOfToDos = toDoElementsList[projectIndex].length
+
+            for(i = numberOfToDos; i < updatedNumberOfToDos ; i++){
+
+                
+                toDoTitleValue =  toDoElementsList[projectIndex][i].toDoTitle.value
+                toDoObjectsList[projectIndex].push(genObjects.createToDo(toDoTitleValue))
+                
+        
+                }
+
+
         }
 
         const newToDoOldProject = () => {
@@ -404,9 +428,16 @@ const toDosLogic = (() => {
 
         }
 
+        //cambiar  los event listeners hacia acqui dentro para no seguir genetando los to-dos con la funcion genToDoElements
+
+        const returnToDo = () => {
+
+        }
+
       
         //Event Listeners
-        oldProjectToDo.addEventListener("click",newToDoOldProject)
+        oldSubmitToDo.addEventListener("click",newToDoOldProject)
+        submitToDoButton.addEventListener("click",newToDoObjectOldProject)
 
         return {genToDoElements}
 
