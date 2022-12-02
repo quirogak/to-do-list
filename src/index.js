@@ -106,13 +106,17 @@ const genDomElements = (() => {
 
         const deleteButton = document.createElement("button")
         deleteButton.classList.add("delete-button")
+        deleteButton.classList.add("delete-button"+toDoIndex)
+        deleteButton.textContent = "x"
         toDoContainer.appendChild(deleteButton)
+        
 
         const toDoTitle = document.createElement("input")
         toDoContainer.appendChild(toDoTitle)
+        toDoTitle.value = "New to-do"
         toDoTitle.type = "text"
         toDoTitle.classList.add("todo-title"+toDoIndex)
-        toDoTitle.classList.add("todo-container"+projectIndex)
+        toDoTitle.classList.add("expand-todo")
         
 
         const checkToDo = document.createElement("input")
@@ -171,6 +175,7 @@ const projectsLogic = (() => {
     projectObjectList.push(genObjects.createProject(title, description, addToDo))
 
    }
+   
 
    const removeContainer = () => {
 
@@ -338,6 +343,7 @@ const toDosLogic = (() => {
         const toDoIndex = toDoElements.length
 
         toDoElements.push(genDomElements.genToDosDOM(currentProjectIndex,toDoIndex))
+        expandToDos.expandToDoLogic(currentProjectIndex)
         
 
      })
@@ -394,13 +400,16 @@ const toDosLogic = (() => {
 
                 genDomElements.genToDosDOM(projectIndex,i)
 
+                //If we want to add any other value about our to-dos, we can add it here, but first, we should add them inside of our Object Functions.
+
                 document.querySelector(".todo-title"+i).value = toDoObjectsList[projectIndex][i].title
 
             
             } 
 
+            console.log(toDoObjectsList[projectIndex])
+
             
-            console.log(toDoObjectsList)
             
     
         }
@@ -409,42 +418,57 @@ const toDosLogic = (() => {
 
             const updatedNumberOfToDos = toDoElementsList[projectIndex].length
 
-            for(i = numberOfToDos; i < updatedNumberOfToDos ; i++){
+            for(i = 0; i < updatedNumberOfToDos ; i++){
 
-                
-                toDoTitleValue =  toDoElementsList[projectIndex][i].toDoTitle.value
-                toDoObjectsList[projectIndex].push(genObjects.createToDo(toDoTitleValue))
-                
-        
+                  toDoTitleValue =  document.querySelector(".todo-title"+i).value
+
+                  //if the object doesn't exists, push the new object, if it already exists, then change the details .
+
+                  if( toDoObjectsList[projectIndex][i] === undefined  ){
+
+                    toDoObjectsList[projectIndex].push(genObjects.createToDo(toDoTitleValue))
+                    
+
+                  }
+
+                  else {
+                    toDoObjectsList[projectIndex][i].title = toDoTitleValue
+                  }
+            
                 }
+
+
 
 
         }
 
-        const newToDoOldProject = () => {
+        const newToDoDOMOldProject = () => {
 
                 toDoElementsList[projectIndex].push(genDomElements.genToDosDOM(projectIndex,i))
             
 
         }
 
-        //cambiar  los event listeners hacia acqui dentro para no seguir genetando los to-dos con la funcion genToDoElements
 
-        const returnToDo = () => {
-
-        }
+     
 
       
+
         //Event Listeners
-        oldSubmitToDo.addEventListener("click",newToDoOldProject)
+        
+        oldSubmitToDo.addEventListener("click",newToDoDOMOldProject)
         submitToDoButton.addEventListener("click",newToDoObjectOldProject)
+        
+
+
+
+
+
+
 
         return {genToDoElements}
 
         
-       
-            
-    
         
     }
 
@@ -457,3 +481,31 @@ const toDosLogic = (() => {
 
 
 
+const expandToDos = (() => {
+
+  
+   
+ const expandToDoLogic = (projectIndex) => {
+
+    const currentToDo = document.querySelector(".expand-todo")
+
+
+    const expandToDo = () => {
+        
+    }
+    
+    currentToDo.addEventListener("click",expandToDo)
+   
+   
+ }
+
+ 
+
+
+
+ return {expandToDoLogic}
+
+
+
+
+})();
