@@ -19,7 +19,7 @@ const genObjects = (() => {
 
         title = title
         description = description
-        dueDate = dueDate
+        dueDate = dueDate  //later i can make the dueDate as a function that calculates the days left.
         priority = priority
         checked = checked
 
@@ -58,7 +58,6 @@ const genDomElements = (() => {
         descriptionInput.classList.add("desc-input"+i)
         descriptionInput.value = "Description..."
 
- 
        
         const toDosContainer = document.createElement("div")
         newProjectContainer.appendChild(toDosContainer)
@@ -92,11 +91,11 @@ const genDomElements = (() => {
 
         const toDoContainer = document.createElement("div")
         toDoContainer.classList.add("todo-container")
-        toDoContainer.classList.add("todo-container"+projectIndex)
+        toDoContainer.classList.add("todo-container"+toDoIndex)
         toDosContainer.appendChild(toDoContainer)
 
         const basicElementsContainer = document.createElement("div")
-        basicElementsContainer.classList.add("basic-elements-container"+toDoIndex)
+        basicElementsContainer.classList.add("basic-elements-container")
         toDoContainer.appendChild(basicElementsContainer)
 
         const deleteButton = document.createElement("button")
@@ -120,23 +119,49 @@ const genDomElements = (() => {
         checkToDo.classList.add("checkbox"+toDoIndex)
         checkToDo.classList.add("checkbox"+projectIndex)
 
+        const descriptionInput = document.createElement("input")
+        toDoContainer.appendChild(descriptionInput)
+        descriptionInput.type = "text"
+        descriptionInput.classList.add("todo-desc"+toDoIndex)
+        descriptionInput.classList.add("todo-description")
+        descriptionInput.value = "Description..."
+        
+
+        const dateInput = document.createElement("input")
+        toDoContainer.appendChild(dateInput)
+        dateInput.type = "date"
+        dateInput.classList.add("todo-date"+toDoIndex)
+        dateInput.classList.add("todo-date")
+
+
+        const priorityColor = document.createElement("select")
+        toDoContainer.appendChild(priorityColor)
+        priorityColor.classList.add("todo-priority"+toDoIndex)
+        priorityColor.classList.add("todo-priority")
+
+        const highPriority = document.createElement("option")
+        highPriority.value = "High"
+        highPriority.textContent = "High"
+        priorityColor.appendChild(highPriority)
+
+        const MediumPriority = document.createElement("option")
+        MediumPriority.value = "Medium"
+        MediumPriority.textContent = "Medium"
+        priorityColor.appendChild(MediumPriority)
+
+        const LowPriority = document.createElement("option")
+        LowPriority.value = "Low"
+        LowPriority.textContent = "Low"
+        priorityColor.appendChild(LowPriority)
+
+
 
         return {toDoTitle}
    }
 
-   const genToDoDetails = (toDoIndex) => {
-      
-      const toDoContainer = document.querySelector(".todo-container"+toDoIndex)
+   
 
-      const descriptionInput = document.createElement("textarea")
-        toDoContainer.appendChild(descriptionInput)
-        descriptionInput.type = "text"
-        descriptionInput.classList.add("todo-desc"+toDoIndex)
-        descriptionInput.value = "Description..."
-
-   }
-
-   return {genProjectsDOM,genToDosDOM,genToDoDetails}
+   return {genProjectsDOM,genToDosDOM}
 
    
 })();
@@ -338,6 +363,7 @@ const toDosLogic = (() => {
         for(i = 0; i < toDoElements.length ; i++){
 
         toDoTitleValue =  toDoElements[i].toDoTitle.value
+        console.log(toDoElements[i])
         toDoObjects.push(genObjects.createToDo(toDoTitleValue))
 
         }
@@ -384,15 +410,19 @@ const toDosLogic = (() => {
             for(i = 0; i < updatedNumberOfToDos ; i++){
 
                   toDoTitleValue =  document.querySelector(".todo-title"+i).value
+                  toDoDescriptionValue = document.querySelector(".todo-desc"+i).value
+
+                  console.log(toDoDescriptionValue)
 
                   //if the object doesn't exists, push the new object, if it already exists, then change the details .
 
                   if( toDoObjectsList[projectIndex][i] === undefined  ){
 
-                    toDoObjectsList[projectIndex].push(genObjects.createToDo(toDoTitleValue))
+                    toDoObjectsList[projectIndex].push(genObjects.createToDo(toDoTitleValue,toDoDescriptionValue))
                   }
                   else {
                     toDoObjectsList[projectIndex][i].title = toDoTitleValue
+                    toDoObjectsList[projectIndex][i].description = toDoDescriptionValue
                   }
             
                 }
@@ -443,13 +473,57 @@ const expandToDos = (() => {
     const expandToDo = (e) => {
 
         const toDoIndex = e.target.classList[0].slice(-1)
-
         const currentToDoDetails = document.querySelector(".expand-todo"+toDoIndex)
 
-        genDomElements.genToDoDetails(toDoIndex)
-        
+        showDescription(toDoIndex)
+        showDueDate(toDoIndex)
+        showPriorityInput(toDoIndex)
+        adjustToDoParent(toDoIndex)
+
         
     }
+
+    const showDescription = (toDoIndex) => {
+
+        const descriptionInput = document.querySelector(".todo-desc"+toDoIndex)
+        descriptionInput.style.width = "80%"
+        descriptionInput.style.height = "15px"
+        descriptionInput.style.padding = "2px"
+        descriptionInput.style.border = "1px solid black"
+
+    }
+
+    const showDueDate = (toDoIndex) =>{
+
+        const dueDateInput = document.querySelector(".todo-date"+toDoIndex)
+        dueDateInput.style.width = "80%"
+        dueDateInput.style.height = "15px"
+        dueDateInput.style.padding = "2px"
+        dueDateInput.style.border = "1px solid black"
+
+    }
+
+    const showPriorityInput = (toDoIndex) =>{
+
+        const priorityInput = document.querySelector(".todo-priority"+toDoIndex)
+        priorityInput.style.width = "85%"
+        priorityInput.style.height = "22px"
+        priorityInput.style.padding = "2px"
+        priorityInput.style.border = "1px solid black"
+
+    }
+
+    const adjustToDoParent = (toDoIndex) =>{
+
+        const toDoContainer = document.querySelector(".todo-container"+toDoIndex)
+
+        toDoContainer.style.gap = "20px"
+    }
+
+
+    
+
+   
     
     
     currentToDo.addEventListener("click", (e) => {expandToDo(e)})
