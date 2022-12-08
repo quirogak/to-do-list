@@ -134,29 +134,29 @@ const genDomElements = (() => {
         dateInput.classList.add("todo-date")
 
 
-        const priorityColor = document.createElement("select")
-        toDoContainer.appendChild(priorityColor)
-        priorityColor.classList.add("todo-priority"+toDoIndex)
-        priorityColor.classList.add("todo-priority")
+        const setPriority = document.createElement("select")
+        toDoContainer.appendChild(setPriority)
+        setPriority.classList.add("todo-priority"+toDoIndex)
+        setPriority.classList.add("todo-priority")
 
         const highPriority = document.createElement("option")
         highPriority.value = "High"
         highPriority.textContent = "High"
-        priorityColor.appendChild(highPriority)
+        setPriority.appendChild(highPriority)
 
         const MediumPriority = document.createElement("option")
         MediumPriority.value = "Medium"
         MediumPriority.textContent = "Medium"
-        priorityColor.appendChild(MediumPriority)
+        setPriority.appendChild(MediumPriority)
 
         const LowPriority = document.createElement("option")
         LowPriority.value = "Low"
         LowPriority.textContent = "Low"
-        priorityColor.appendChild(LowPriority)
+        setPriority.appendChild(LowPriority)
 
 
 
-        return {toDoTitle}
+        return {toDoTitle,descriptionInput,dateInput,setPriority}
    }
 
    
@@ -311,9 +311,6 @@ const projectsLogic = (() => {
  }
 
 
-   const searchLogic = () => {
-
-   }
 
    addButton.addEventListener("click",newProject)
  
@@ -362,13 +359,23 @@ const toDosLogic = (() => {
 
         for(i = 0; i < toDoElements.length ; i++){
 
+        //if we want to add new to-do details and save them, we have to add them from here.
+
         toDoTitleValue =  toDoElements[i].toDoTitle.value
-        console.log(toDoElements[i])
-        toDoObjects.push(genObjects.createToDo(toDoTitleValue))
+        toDoDescriptionValue = toDoElements[i].descriptionInput.value
+        toDoDateInput = toDoElements[i].dateInput.value
+        toDoPriority = toDoElements[i].setPriority.value
+        
+
+
+        toDoObjects.push(genObjects.createToDo(toDoTitleValue,toDoDescriptionValue,toDoDateInput,toDoPriority))
 
         }
             
     }
+
+
+
 
     addToDoButton.addEventListener("click", (e) => {storeToDosDOM(e)})
     submitToDoButton.addEventListener("click",newToDoObject)
@@ -396,9 +403,12 @@ const toDosLogic = (() => {
 
                 genDomElements.genToDosDOM(projectIndex,i)
 
-                //If we want to add any other value about our to-dos, we can add it here, but first, we should add them inside of our Object Functions.
+                //If we want to add any other value about our to-dos in order to return it, we can add it here, but first, we should add them inside of our newToDoObject Function.
 
-                document.querySelector(".todo-title"+i).value = toDoObjectsList[projectIndex][i].title   
+                document.querySelector(".todo-title"+i).value = toDoObjectsList[projectIndex][i].title 
+                document.querySelector(".todo-desc"+i).value = toDoObjectsList[projectIndex][i].description  
+                document.querySelector(".todo-date"+i).value = toDoObjectsList[projectIndex][i].dueDate
+                document.querySelector(".todo-priority"+i).value = toDoObjectsList[projectIndex][i].priority
             } 
             callExpandToDo()
         }
@@ -411,18 +421,21 @@ const toDosLogic = (() => {
 
                   toDoTitleValue =  document.querySelector(".todo-title"+i).value
                   toDoDescriptionValue = document.querySelector(".todo-desc"+i).value
+                  toDoDateInputValue =  document.querySelector(".todo-date"+i).value
+                  toDoPriorityValue = document.querySelector(".todo-priority"+i).value
 
-                  console.log(toDoDescriptionValue)
 
                   //if the object doesn't exists, push the new object, if it already exists, then change the details .
 
                   if( toDoObjectsList[projectIndex][i] === undefined  ){
 
-                    toDoObjectsList[projectIndex].push(genObjects.createToDo(toDoTitleValue,toDoDescriptionValue))
+                    toDoObjectsList[projectIndex].push(genObjects.createToDo(toDoTitleValue,toDoDescriptionValue,toDoDateInputValue,toDoPriorityValue))
                   }
                   else {
                     toDoObjectsList[projectIndex][i].title = toDoTitleValue
                     toDoObjectsList[projectIndex][i].description = toDoDescriptionValue
+                    toDoObjectsList[projectIndex][i].dueDate = toDoDateInputValue
+                    toDoObjectsList[projectIndex][i].priority = toDoPriorityValue
                   }
             
                 }
@@ -506,7 +519,7 @@ const expandToDos = (() => {
     const showPriorityInput = (toDoIndex) =>{
 
         const priorityInput = document.querySelector(".todo-priority"+toDoIndex)
-        priorityInput.style.width = "85%"
+        priorityInput.style.width = "83%"
         priorityInput.style.height = "22px"
         priorityInput.style.padding = "2px"
         priorityInput.style.border = "1px solid black"
