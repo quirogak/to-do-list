@@ -65,7 +65,7 @@ h1{
     height: 4vh;
 }
 
-.search-input {
+#search-input {
     height: 3vh;
     border-radius: 20px;
     border: none;
@@ -100,7 +100,7 @@ input:hover {
 
 
 .project-tab:hover {
-    border-bottom: 2px solid rgb(71, 112, 201);
+    border-bottom: 2px solid rgb(92, 101, 187);
 }
 
 
@@ -128,12 +128,38 @@ input:hover {
     gap: 50px;
 }
 
+.bottom-container {
+    height: min-content;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.submit-button {
+    margin: 0;
+    border: 0;
+    width: 30%;
+    background-color: rgb(92, 101, 187);
+    border-radius: 20px;
+    color: rgb(255, 255, 255);
+    padding: 10px;
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+.submit-button:hover{
+    background-color:rgb(75, 86, 182);
+}
+
 .submit-todo {
     margin: 0;
     margin-top: 20px;
     margin-bottom: 10px;
     position: relative;
     left: -10px;
+    align-self: flex-end;
 }
 
 
