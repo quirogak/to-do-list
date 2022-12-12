@@ -1,4 +1,3 @@
-
 const genObjects = (() => {
 
     const createProject = (title,description,addToDo) => {
@@ -343,6 +342,7 @@ const toDosLogic = (() => {
 
         toDoElements.push(genDomElements.genToDosDOM(currentProjectIndex,toDoIndex))
         expandToDos.expandToDoLogic(toDoIndex)
+        deleteNewToDoLogic(toDoIndex,currentProjectIndex)
     } 
 
 
@@ -374,8 +374,20 @@ const toDosLogic = (() => {
             
     }
 
+    const deleteNewToDoLogic = (toDoIndex) => {
 
+        const currentDeleteButton = document.querySelector(".delete-button"+toDoIndex)
+    
+        const deleteToDo = () => {
+    
+        document.querySelector(".todo-container"+toDoIndex).remove()
+        toDoElements.splice(toDoIndex,1)
 
+        }
+    
+        currentDeleteButton.addEventListener("click",deleteToDo)
+       
+    }
 
     addToDoButton.addEventListener("click", (e) => {storeToDosDOM(e)})
     submitToDoButton.addEventListener("click",newToDoObject)
@@ -383,6 +395,30 @@ const toDosLogic = (() => {
     submitToDoButton.addEventListener("click",pushObjectsList)
         
   }
+
+  
+
+ 
+ const deleteOldToDoLogic = (numberOfToDos,projectIndex) => {
+
+    const deleteToDo = (e) => {
+
+        const index = e.target.classList[1]
+        const toDoIndex = index.slice(-1)
+
+        document.querySelector(".todo-container"+toDoIndex).remove()
+        toDoElementsList[projectIndex].splice(toDoIndex,1)
+
+
+
+    }
+
+    for(i = 0; i < numberOfToDos; i++){
+        currentDeleteButton = document.querySelector(".delete-button"+i)
+        currentDeleteButton.addEventListener("click",(e) => {deleteToDo(e)})
+    }
+
+ }
 
      
  const returnToDoDOM = (projectIndex) => {
@@ -411,6 +447,7 @@ const toDosLogic = (() => {
                 document.querySelector(".todo-priority"+i).value = toDoObjectsList[projectIndex][i].priority
             } 
             callExpandToDo()
+            deleteOldToDoLogic(numberOfToDos,projectIndex)
         }
 
     const newToDoObjectOldProject = () => {
