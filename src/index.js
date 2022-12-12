@@ -62,17 +62,20 @@ const genDomElements = (() => {
         newProjectContainer.appendChild(toDosContainer)
         toDosContainer.classList.add("todos-container")
 
+        const bottomContainer = document.createElement("div")
+        newProjectContainer.appendChild(bottomContainer)
+        bottomContainer.classList.add("bottom-container")
+
  
         const submitProject = document.createElement("button")
-        newProjectContainer.appendChild(submitProject)
+        bottomContainer.appendChild(submitProject)
         submitProject.classList.add("submit-button")
         submitProject.classList.add("submit-project-button"+i)
         submitProject.textContent = "Submit Details"
 
-      
 
         const submitToDo = document.createElement("button")
-        newProjectContainer.appendChild(submitToDo)
+        bottomContainer.appendChild(submitToDo)
         submitToDo.type ="button"
         submitToDo.classList.add("submit-todo")
         submitToDo.classList.add("submit-todo-button"+i)
@@ -284,8 +287,6 @@ const projectsLogic = (() => {
 
 }
 
-
-
    const callReturnTab = (e) => {
 
     addProjectDOM()
@@ -297,6 +298,35 @@ const projectsLogic = (() => {
 
  }
 
+//search logic based on a tutorial of javascript.plainenglish.io (because it is just an extra and not required feature.)
+ const searchLogic = () => {
+
+    const searchInput = document.getElementById("search-input")
+
+    const projectNames = document.getElementsByClassName("project-tab")
+
+    searchInput.addEventListener("keyup", (e) => {
+
+    const {value} = e.target
+
+    const finalValue = value.toLowerCase()
+
+    for (const elementName of projectNames){
+
+        let name = elementName.textContent.toLowerCase()
+
+        if (name.includes(finalValue)){
+            elementName.style.display = "block"
+        }
+        else {
+            elementName.style.display = "none"
+        }
+    }
+
+    })
+
+   }
+
    const newProject = () => {
 
     checkContainer()
@@ -307,6 +337,8 @@ const projectsLogic = (() => {
     projectElements[projectElements.length-1].submitProject.addEventListener("click", newProjectObject)
 
     projectElements[projectElements.length-1].submitProject.addEventListener("click", callReturnTab)
+
+    projectElements[projectElements.length-1].submitProject.addEventListener("click",searchLogic)
  }
 
 
@@ -314,10 +346,11 @@ const projectsLogic = (() => {
    addButton.addEventListener("click",newProject)
  
 
+  
    
-   return {}
-
 })();
+
+
 
 
 const toDosLogic = (() => {
@@ -366,10 +399,6 @@ const toDosLogic = (() => {
         toDoDateInput = toDoElements[i].dateInput.value
         toDoPriority = toDoElements[i].setPriority.value
         isToDoChecked = toDoElements[i].checkToDo.checked
-
-
-        
-
 
         toDoObjects.push(genObjects.createToDo(toDoTitleValue,toDoDescriptionValue,toDoDateInput,toDoPriority,isToDoChecked))
 
@@ -504,11 +533,6 @@ const toDosLogic = (() => {
     }
 
 
-
-
-
-
-
     return {newToDo,returnToDoDOM}
    
 })();
@@ -591,3 +615,4 @@ const expandToDos = (() => {
 
 
 })();
+
