@@ -155,7 +155,7 @@ const genDomElements = (() => {
 
 
 
-        return {toDoTitle,descriptionInput,dateInput,setPriority}
+        return {toDoTitle,descriptionInput,dateInput,setPriority,checkToDo}
    }
 
    
@@ -365,10 +365,13 @@ const toDosLogic = (() => {
         toDoDescriptionValue = toDoElements[i].descriptionInput.value
         toDoDateInput = toDoElements[i].dateInput.value
         toDoPriority = toDoElements[i].setPriority.value
+        isToDoChecked = toDoElements[i].checkToDo.checked
+
+
         
 
 
-        toDoObjects.push(genObjects.createToDo(toDoTitleValue,toDoDescriptionValue,toDoDateInput,toDoPriority))
+        toDoObjects.push(genObjects.createToDo(toDoTitleValue,toDoDescriptionValue,toDoDateInput,toDoPriority,isToDoChecked))
 
         }
             
@@ -394,9 +397,7 @@ const toDosLogic = (() => {
     submitToDoButton.addEventListener("click",pushElementsList)
     submitToDoButton.addEventListener("click",pushObjectsList)
         
-  }
-
-  
+ }
 
  
  const deleteOldToDoLogic = (numberOfToDos,projectIndex) => {
@@ -408,8 +409,6 @@ const toDosLogic = (() => {
 
         document.querySelector(".todo-container"+toDoIndex).remove()
         toDoElementsList[projectIndex].splice(toDoIndex,1)
-
-
 
     }
 
@@ -445,6 +444,7 @@ const toDosLogic = (() => {
                 document.querySelector(".todo-desc"+i).value = toDoObjectsList[projectIndex][i].description  
                 document.querySelector(".todo-date"+i).value = toDoObjectsList[projectIndex][i].dueDate
                 document.querySelector(".todo-priority"+i).value = toDoObjectsList[projectIndex][i].priority
+                document.querySelector(".checkbox"+i).checked = toDoObjectsList[projectIndex][i].checked
             } 
             callExpandToDo()
             deleteOldToDoLogic(numberOfToDos,projectIndex)
@@ -460,19 +460,21 @@ const toDosLogic = (() => {
                   toDoDescriptionValue = document.querySelector(".todo-desc"+i).value
                   toDoDateInputValue =  document.querySelector(".todo-date"+i).value
                   toDoPriorityValue = document.querySelector(".todo-priority"+i).value
+                  toDoCheckedValue = document.querySelector(".checkbox"+i).checked
 
 
                   //if the object doesn't exists, push the new object, if it already exists, then change the details .
 
                   if( toDoObjectsList[projectIndex][i] === undefined  ){
 
-                    toDoObjectsList[projectIndex].push(genObjects.createToDo(toDoTitleValue,toDoDescriptionValue,toDoDateInputValue,toDoPriorityValue))
+                    toDoObjectsList[projectIndex].push(genObjects.createToDo(toDoTitleValue,toDoDescriptionValue,toDoDateInputValue,toDoPriorityValue,toDoCheckedValue))
                   }
                   else {
                     toDoObjectsList[projectIndex][i].title = toDoTitleValue
                     toDoObjectsList[projectIndex][i].description = toDoDescriptionValue
                     toDoObjectsList[projectIndex][i].dueDate = toDoDateInputValue
                     toDoObjectsList[projectIndex][i].priority = toDoPriorityValue
+                    toDoObjectsList[projectIndex][i].checked = toDoCheckedValue
                   }
             
                 }
@@ -483,6 +485,7 @@ const toDosLogic = (() => {
                 toDoElementsList[projectIndex].push(genDomElements.genToDosDOM(projectIndex,i))
 
         }
+
 
     const callExpandToDo = () => {
 
@@ -499,6 +502,9 @@ const toDosLogic = (() => {
         return {genToDoElements}
 
     }
+
+
+
 
 
 
@@ -570,11 +576,6 @@ const expandToDos = (() => {
         toDoContainer.style.gap = "20px"
     }
 
-
-    
-
-   
-    
     
     currentToDo.addEventListener("click", (e) => {expandToDo(e)})
    
