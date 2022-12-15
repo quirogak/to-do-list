@@ -1,15 +1,12 @@
 const genObjects = (() => {
 
-    const createProject = (title,description,addToDo) => {
+    const createProject = (title,description) => {
 
          title = title
 
          description = description
 
-         addToDo = addToDo
-
-
-        return {title,description,addToDo}
+        return {title,description}
 
 
     }
@@ -18,7 +15,7 @@ const genObjects = (() => {
 
         title = title
         description = description
-        dueDate = dueDate  //later i can make the dueDate as a function that calculates the days left.
+        dueDate = dueDate  
         priority = priority
         checked = checked
 
@@ -178,12 +175,11 @@ const projectsLogic = (() => {
 
   //Global constants
 
-   const projectElements = []
+   const projectElements =  JSON.parse(localStorage.getItem("projectElements") || "[]");
 
-   const projectObjectList = []
+   const projectObjectList = JSON.parse(localStorage.getItem("projectObjects") || "[]");
 
    const addButton = document.querySelector(".new-project")
-
 
 
    //Functions
@@ -191,6 +187,10 @@ const projectsLogic = (() => {
    const newProjectDOM = () => {
 
     projectElements.push(genDomElements.genProjectsDOM(projectElements.length))
+
+    localStorage.setItem("projectElements", JSON.stringify(projectElements))
+
+    
 
    }
 
@@ -207,6 +207,8 @@ const projectsLogic = (() => {
 
 
     projectObjectList.push(genObjects.createProject(title, description, addToDo))
+
+    localStorage.setItem("projectObjects", JSON.stringify(projectObjectList))
 
    }
    
@@ -241,7 +243,6 @@ const projectsLogic = (() => {
 
     //when the user clicks submit, the Project container gets removed.
     removeContainer()
-
 
    }
 
@@ -344,6 +345,42 @@ const projectsLogic = (() => {
 
 
    addButton.addEventListener("click",newProject)
+
+   //localstorage logic
+
+   const addExistentProjectDOM = () => {
+
+    const tabContainer = document.querySelector(".tab-container")
+   
+
+    for(i = 0; i < projectObjectList.length; i++){
+
+        const newProject = document.createElement("button")
+        newProject.classList.add("project-tab", "number"+i)
+        tabContainer.appendChild(newProject)
+        
+        //Assign a name to the left-part tab 
+        newProject.textContent = projectObjectList[i].title
+
+    }
+
+    //when the user clicks submit, the Project container gets removed.
+    removeContainer()
+
+   }
+
+   if (localStorage.getItem("projectElements")){
+
+    console.log(projectObjectList)
+    addExistentProjectDOM()
+
+
+   }
+
+    
+    
+
+
  
 
   
@@ -615,4 +652,6 @@ const expandToDos = (() => {
 
 
 })();
+
+
 
