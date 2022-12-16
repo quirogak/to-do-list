@@ -215,8 +215,14 @@ const projectsLogic = (() => {
 
    const removeContainer = () => {
 
-    const projectContainer = document.querySelector(".project-container")
+    if (document.querySelector(".right-part").firstChild =! undefined){
+
+     const projectContainer = document.querySelector(".project-container")
      projectContainer.remove()
+
+    }
+
+   else {}
 
     }
 
@@ -250,6 +256,9 @@ const projectsLogic = (() => {
 
     const currentProject = projectObjectList[currentProjectIndex]
     genDomElements.genProjectsDOM(currentProjectIndex)
+
+    console.log(currentProject)
+    console.log(currentProjectIndex)
 
     document.querySelector(".title-input"+currentProjectIndex).value = currentProject.title
     document.querySelector(".desc-input"+currentProjectIndex).value = currentProject.description
@@ -364,26 +373,40 @@ const projectsLogic = (() => {
 
     }
 
-    //when the user clicks submit, the Project container gets removed.
-    removeContainer()
+   }
+
+   const localStorageProjectsReturn = () => {
+
+
+   const returnExistentProjectsAndToDos = (e) => {
+
+    const index = e.target.classList[1]
+    const currentProjectIndex = index.slice(-1)
+    const currentProjectTab = document.querySelector(".number"+currentProjectIndex)
+
+    returnProjectAndToDos(currentProjectIndex)
 
    }
 
-   if (localStorage.getItem("projectElements")){
 
-    console.log(projectObjectList)
-    addExistentProjectDOM()
+   
 
+
+    if (localStorage.getItem("projectElements")){
+
+        addExistentProjectDOM()
+
+        const currentProjectTab = document.querySelector(".project-tab")
+
+        currentProjectTab.addEventListener("click", (e) => {returnExistentProjectsAndToDos(e)})
 
    }
 
+   }
+
+
+   localStorageProjectsReturn()
     
-    
-
-
- 
-
-  
    
 })();
 
@@ -393,13 +416,13 @@ const projectsLogic = (() => {
 const toDosLogic = (() => {
 
     
- const toDoElementsList = []
- const toDoObjectsList = []
+ const toDoElementsList =  JSON.parse(localStorage.getItem("toDoElementsList") || "[]");
+ const toDoObjectsList =  JSON.parse(localStorage.getItem("toDoObjectsList") || "[]");
     
    const newToDo = () => {
 
-    const toDoElements = []
-    let toDoObjects = []
+    const toDoElements = JSON.parse(localStorage.getItem("toDoElements") || "[]");
+    let toDoObjects = JSON.parse(localStorage.getItem("toDoObjects") || "[]");
 
     const submitToDoButton = document.querySelector(".submit-button")
     const addToDoButton = document.querySelector(".submit-todo")
@@ -413,15 +436,22 @@ const toDosLogic = (() => {
         toDoElements.push(genDomElements.genToDosDOM(currentProjectIndex,toDoIndex))
         expandToDos.expandToDoLogic(toDoIndex)
         deleteNewToDoLogic(toDoIndex,currentProjectIndex)
+
+        localStorage.setItem("toDoElements", JSON.stringify(toDoElements))
+
     } 
 
 
     const pushElementsList = () => {
         toDoElementsList.push(toDoElements)
+
+        localStorage.setItem("toDoElementsList", JSON.stringify(toDoElementsList))
     }
 
     const pushObjectsList = () => {
         toDoObjectsList.push(toDoObjects)
+
+        localStorage.setItem("toDoObjectsList", JSON.stringify(toDoObjectsList))
     }
     
 
@@ -438,6 +468,10 @@ const toDosLogic = (() => {
         isToDoChecked = toDoElements[i].checkToDo.checked
 
         toDoObjects.push(genObjects.createToDo(toDoTitleValue,toDoDescriptionValue,toDoDateInput,toDoPriority,isToDoChecked))
+
+        localStorage.setItem("toDoObjects", JSON.stringify(toDoObjects))
+
+        
 
         }
             
@@ -488,7 +522,8 @@ const toDosLogic = (() => {
      
  const returnToDoDOM = (projectIndex) => {
 
-        
+        console.log(toDoElementsList)
+        console.log(toDoElementsList[projectIndex])
         const numberOfToDos = toDoElementsList[projectIndex].length
         const submitToDoButton = document.querySelector(".submit-button")
         const addToDoButton = document.querySelector(".submit-todo")
