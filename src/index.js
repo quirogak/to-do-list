@@ -257,9 +257,6 @@ const projectsLogic = (() => {
     const currentProject = projectObjectList[currentProjectIndex]
     genDomElements.genProjectsDOM(currentProjectIndex)
 
-    console.log(currentProject)
-    console.log(currentProjectIndex)
-
     document.querySelector(".title-input"+currentProjectIndex).value = currentProject.title
     document.querySelector(".desc-input"+currentProjectIndex).value = currentProject.description
 
@@ -276,6 +273,8 @@ const projectsLogic = (() => {
 
     updateTab(currentProjectIndex,currentObject.title)
     removeContainer()
+    localStorage.setItem("projectObjects", JSON.stringify(projectObjectList))
+    localStorage.setItem("projectElements", JSON.stringify(projectElements))
 
 }
 
@@ -355,6 +354,8 @@ const projectsLogic = (() => {
 
    addButton.addEventListener("click",newProject)
 
+
+
    //localstorage logic
 
    const addExistentProjectDOM = () => {
@@ -382,23 +383,23 @@ const projectsLogic = (() => {
 
     const index = e.target.classList[1]
     const currentProjectIndex = index.slice(-1)
-    const currentProjectTab = document.querySelector(".number"+currentProjectIndex)
 
     returnProjectAndToDos(currentProjectIndex)
 
    }
 
 
-   
-
-
     if (localStorage.getItem("projectElements")){
 
         addExistentProjectDOM()
 
-        const currentProjectTab = document.querySelector(".project-tab")
+        const currentProjectTab = document.querySelectorAll(".project-tab")
 
-        currentProjectTab.addEventListener("click", (e) => {returnExistentProjectsAndToDos(e)})
+        for(i = 0; i < projectObjectList.length; i++){
+            currentProjectTab[i].addEventListener("click", (e) => {returnExistentProjectsAndToDos(e)})
+        }
+        
+
 
    }
 
@@ -522,8 +523,7 @@ const toDosLogic = (() => {
      
  const returnToDoDOM = (projectIndex) => {
 
-        console.log(toDoElementsList)
-        console.log(toDoElementsList[projectIndex])
+    
         const numberOfToDos = toDoElementsList[projectIndex].length
         const submitToDoButton = document.querySelector(".submit-button")
         const addToDoButton = document.querySelector(".submit-todo")
