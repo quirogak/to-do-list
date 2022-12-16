@@ -422,8 +422,8 @@ const toDosLogic = (() => {
     
    const newToDo = () => {
 
-    const toDoElements = JSON.parse(localStorage.getItem("toDoElements") || "[]");
-    let toDoObjects = JSON.parse(localStorage.getItem("toDoObjects") || "[]");
+    const toDoElements = []
+    let toDoObjects = []
 
     const submitToDoButton = document.querySelector(".submit-button")
     const addToDoButton = document.querySelector(".submit-todo")
@@ -437,8 +437,6 @@ const toDosLogic = (() => {
         toDoElements.push(genDomElements.genToDosDOM(currentProjectIndex,toDoIndex))
         expandToDos.expandToDoLogic(toDoIndex)
         deleteNewToDoLogic(toDoIndex,currentProjectIndex)
-
-        localStorage.setItem("toDoElements", JSON.stringify(toDoElements))
 
     } 
 
@@ -469,12 +467,8 @@ const toDosLogic = (() => {
         isToDoChecked = toDoElements[i].checkToDo.checked
 
         toDoObjects.push(genObjects.createToDo(toDoTitleValue,toDoDescriptionValue,toDoDateInput,toDoPriority,isToDoChecked))
-
-        localStorage.setItem("toDoObjects", JSON.stringify(toDoObjects))
-
-        
-
         }
+       
             
     }
 
@@ -549,6 +543,8 @@ const toDosLogic = (() => {
             } 
             callExpandToDo()
             deleteOldToDoLogic(numberOfToDos,projectIndex)
+            localStorage.setItem("toDoObjectsList", JSON.stringify(toDoObjectsList))
+            localStorage.setItem("toDoElementsList", JSON.stringify(toDoElementsList))
         }
 
     const newToDoObjectOldProject = () => {
@@ -579,11 +575,14 @@ const toDosLogic = (() => {
                   }
             
                 }
+                localStorage.setItem("toDoObjectsList", JSON.stringify(toDoObjectsList))
         }
 
     const newToDoDOMOldProject = () => {
 
                 toDoElementsList[projectIndex].push(genDomElements.genToDosDOM(projectIndex,i))
+
+                localStorage.setItem("toDoElementsList", JSON.stringify(toDoElementsList))
 
         }
 
@@ -603,6 +602,9 @@ const toDosLogic = (() => {
         return {genToDoElements}
 
     }
+
+
+    
 
 
     return {newToDo,returnToDoDOM}
